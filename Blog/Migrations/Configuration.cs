@@ -10,7 +10,7 @@ namespace Blog.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            //AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationDataLossAllowed = true;
             ContextKey = "Blog.Models.BlogDbContext";
         }
 

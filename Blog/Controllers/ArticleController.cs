@@ -54,8 +54,9 @@ namespace Blog.Controllers
                     return View(article);
             }            
         }
-
+        
         //GET: Article/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -63,6 +64,7 @@ namespace Blog.Controllers
 
         //POST: Article/Create
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Article article)
         {
             if (ModelState.IsValid)
@@ -135,5 +137,62 @@ namespace Blog.Controllers
 
             return View(model);
         }
+
+        //GET: Article/Delete
+        public ActionResult Delete (int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var database = new BlogDbContext())
+            {
+                var article = database.Articles.Where(a => a.Id == id).Include(a => a.Author).First();
+
+                if(article == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(article);
+            }
+
+            return View();
+        }
+
+        //POST: Article/Delete
+        [HttpPost]
+        [ActionName ("Delete")]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using (var database = new BlogDbContext())
+            {
+                var article = database.Articles.Where(a => a.Id == id).Include(a => a.Author).First();
+
+                if (article == null)
+                {
+                    return HttpNotFound();
+                }
+
+                database.Articles.Remove(article);
+                database.SaveChanges();
+
+                return RedirectToAction("Index");
+            }            
+        }
+
+        /*private bool IsUserAuthorizedToEdit(Article article)
+        {
+            bool isAdmin = this.User.IsInRole("Admin");
+            bool isAuthor = article.IsAuthor(this.User.Identity.Name);
+
+            return isAdmin || isAuthor;
+        }*/
     }
 }

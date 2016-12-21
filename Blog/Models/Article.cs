@@ -7,13 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Models
 {
-    /*public bool IsAuthor(string name)
-    {
-        return this.IsAuthor.UserName.Equals(name);
-    }*/
-
-
-    public class Article
+        public class Article
     {
         [Key]
         public int Id { get; set; }
@@ -29,5 +23,10 @@ namespace Blog.Models
         public string AuthorId { get; set; }
 
         public virtual ApplicationUser Author { get; set; }
+
+        public bool IsAuthor(string name)
+        {
+            return this.Author.UserName.Equals(name);
+        }
     }    
 }

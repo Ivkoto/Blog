@@ -90,6 +90,7 @@ namespace Blog.Controllers
         }
 
         //GET: Article/Edit
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if(id == null)
@@ -100,6 +101,11 @@ namespace Blog.Controllers
             using (var database = new BlogDbContext())
             {
                 var article = database.Articles.Where(a => a.Id == id).First();
+
+                if (!IsUserAuthorizedToEdit(article))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
 
                 if(article == null)
                 {
@@ -117,6 +123,7 @@ namespace Blog.Controllers
 
         //POST: Article/Edit
         [HttpPost]
+        [Authorize]
         public ActionResult Edit (ArticleViewModel model)
         {
             if (ModelState.IsValid)
@@ -139,6 +146,7 @@ namespace Blog.Controllers
         }
 
         //GET: Article/Delete
+        [Authorize]
         public ActionResult Delete (int? id)
         {
             if (id == null)
@@ -149,6 +157,11 @@ namespace Blog.Controllers
             using (var database = new BlogDbContext())
             {
                 var article = database.Articles.Where(a => a.Id == id).Include(a => a.Author).First();
+
+                if(!IsUserAuthorizedToEdit(article))
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
 
                 if(article == null)
                 {
@@ -163,6 +176,7 @@ namespace Blog.Controllers
 
         //POST: Article/Delete
         [HttpPost]
+        [Authorize]
         [ActionName ("Delete")]
         public ActionResult DeleteConfirmed(int? id)
         {
@@ -187,12 +201,12 @@ namespace Blog.Controllers
             }            
         }
 
-        /*private bool IsUserAuthorizedToEdit(Article article)
+        private bool IsUserAuthorizedToEdit(Article article)
         {
             bool isAdmin = this.User.IsInRole("Admin");
             bool isAuthor = article.IsAuthor(this.User.Identity.Name);
 
             return isAdmin || isAuthor;
-        }*/
+        }        
     }
 }

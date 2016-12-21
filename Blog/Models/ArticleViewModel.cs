@@ -16,6 +16,7 @@ namespace Blog.Models
         [StringLength (50)]
         public string Title { get; set; }
 
+
         [Required]
         public string Content { get; set; }
 

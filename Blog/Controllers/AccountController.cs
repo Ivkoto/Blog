@@ -86,7 +86,7 @@ namespace Blog.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Invalid login attempt. Username or password is invalid!");
                     return View(model);
             }
         }
@@ -153,6 +153,9 @@ namespace Blog.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, FullName = model.FullName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
+                var addRoleResult = UserManager.AddToRole(user.Id, "User");
+
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);

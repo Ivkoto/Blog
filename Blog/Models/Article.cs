@@ -24,9 +24,9 @@ namespace Blog.Models
 
         public virtual ApplicationUser Author { get; set; }
 
-        public bool IsAuthor(string name)
+        public bool IsAuthor(string username)
         {
-            return this.Author.UserName.Equals(name);
+            return this.Author.UserName.Equals(username);
         }
     }    
 }

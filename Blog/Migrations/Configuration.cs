@@ -29,7 +29,7 @@ namespace Blog.Migrations
             {
                 this.CreateUser(context, "admin@admin.com", "Admin", "123");
                 this.SetRoleToUser(context, "admin@admin.com", "Admin");
-            }            
+            }                        
         }
         
 

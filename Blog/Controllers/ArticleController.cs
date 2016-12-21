@@ -131,7 +131,7 @@ namespace Blog.Controllers
                 using (var database = new BlogDbContext())
                 {
                     var article = database.Articles.FirstOrDefault(a => a.Id == model.Id);
-
+                    
                     article.Title = model.Title;
                     article.Content = model.Content;
 

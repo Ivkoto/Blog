@@ -14,6 +14,7 @@ namespace Blog.Models
         }
 
         public virtual IDbSet<Article> Articles { get; set; }
+        public object User { get; internal set; }
 
         public static BlogDbContext Create()
         {
